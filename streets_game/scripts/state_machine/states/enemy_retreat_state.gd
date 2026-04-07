@@ -7,14 +7,14 @@ var y_speed_ratio: float = 0.6
 
 
 func enter() -> void:
-	"""进入撤退状态 / Enter retreat state"""
+	## 进入撤退状态 / Enter retreat state
 	if character:
 		character.animation_player.play("walk")
 		character.disable_hitbox()
 
 
-func process_physics(delta: float) -> void:
-	"""处理撤退逻辑 / Handle retreat logic"""
+func physics_process(delta: float) -> void:
+	## 处理撤退逻辑 / Handle retreat logic
 	if not character:
 		return
 
@@ -22,7 +22,7 @@ func process_physics(delta: float) -> void:
 
 	# 检查目标是否仍在范围内 / Check if target still in range
 	if not enemy.is_target_in_range():
-		state_machine.transition_to("EnemyIdleState")
+		state_machine.transition_to_by_name("IdleState")
 		return
 
 	# 朝向目标 / Face target
@@ -45,8 +45,8 @@ func process_physics(delta: float) -> void:
 		if not thrower.should_retreat() and thrower.can_throw():
 			# 回到靠近状态进行投掷 / Return to approach state to throw
 			if thrower.request_attack_slot():
-				state_machine.transition_to("EnemyAttackState")
+				state_machine.transition_to_by_name("AttackState")
 				return
 			else:
-				state_machine.transition_to("EnemyApproachState")
+				state_machine.transition_to_by_name("ApproachState")
 				return

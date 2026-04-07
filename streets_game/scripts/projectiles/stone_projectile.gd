@@ -16,7 +16,7 @@ var travel_time: float = 0.0
 
 
 func _ready() -> void:
-	"""初始化投掷物 / Initialize projectile"""
+	## 初始化投掷物 / Initialize projectile
 	# 连接信号 / Connect signals
 	area_entered.connect(_on_area_entered)
 
@@ -25,7 +25,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	"""更新投掷物位置 / Update projectile position"""
+	## 更新投掷物位置 / Update projectile position
 	# 移动投掷物 / Move projectile
 	position += direction * speed * delta
 
@@ -37,25 +37,21 @@ func _physics_process(delta: float) -> void:
 
 ## 设置方向 / Set direction
 func set_direction(new_direction: Vector2) -> void:
-	"""设置投掷物的方向 / Set projectile direction"""
 	direction = new_direction.normalized()
 
 
 ## 设置伤害 / Set damage
 func set_damage(new_damage: int) -> void:
-	"""设置投掷物的伤害值 / Set projectile damage"""
 	damage = new_damage
 
 
 ## 设置拥有者 / Set owner
 func set_owner(enemy: EnemyBase) -> void:
-	"""设置投掷物的拥有者敌人 / Set the owner enemy"""
 	owner_enemy = enemy
 
 
 ## 区域进入 / Area entered
 func _on_area_entered(area: Area2D) -> void:
-	"""当投掷物击中区域时 / When projectile hits an area"""
 	# 只伤害敌人，不伤害投掷者 / Only damage enemies, not thrower
 	if area is Hurtbox or (area.get_parent() is BaseCharacter):
 		var target = area.get_parent() as BaseCharacter
@@ -77,7 +73,6 @@ func _on_area_entered(area: Area2D) -> void:
 
 ## 显示投掷物的视觉效果（可选）/ Visual effect display (optional)
 func show_impact() -> void:
-	"""显示撞击效果 / Show impact effect"""
 	# 这里可以添加粒子效果或其他视觉效果
 	# Add particle effects or other visual effects here
 	pass

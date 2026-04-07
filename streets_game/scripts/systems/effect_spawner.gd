@@ -1,7 +1,7 @@
 extends Node
 ## 效果生成器 - 管理所有视觉和声音效果 | Effect Spawner - Manages all visual and sound effects
 
-class_name EffectSpawner
+## class_name 已移除：Godot 4 不允許 class_name 與 autoload 名稱相同
 
 # 预加载场景 | Preloaded scenes
 var _hit_effect_scene: PackedScene

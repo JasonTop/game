@@ -5,15 +5,15 @@ class_name PlayerIdleState
 
 
 func enter() -> void:
-	"""进入闲置状态 / Enter idle state"""
+	## 进入闲置状态 / Enter idle state
 	if character:
 		character.animation_player.play("idle")
 		character.reset_velocity()
 		character.disable_hitbox()
 
 
-func process_physics(delta: float) -> void:
-	"""处理物理帧 / Handle physics processing"""
+func physics_process(delta: float) -> void:
+	## 处理物理帧 / Handle physics processing
 	if not character:
 		return
 
@@ -22,7 +22,7 @@ func process_physics(delta: float) -> void:
 	# 检查是否需要切换状态 / Check if we need to transition
 	# 移动 / Movement
 	if player.input_direction != Vector2.ZERO:
-		state_machine.transition_to("PlayerWalkState")
+		state_machine.transition_to_by_name("WalkState")
 		return
 
 	# 攻击 / Attack

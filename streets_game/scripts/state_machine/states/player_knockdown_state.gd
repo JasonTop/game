@@ -9,7 +9,7 @@ var getup_invincibility_duration: float = 0.6
 
 
 func enter() -> void:
-	"""进入击倒状态 / Enter knockdown state"""
+	## 进入击倒状态 / Enter knockdown state
 	if not character:
 		return
 
@@ -27,8 +27,8 @@ func enter() -> void:
 	character.sprite_2d.position.y = 0
 
 
-func process_physics(delta: float) -> void:
-	"""处理击倒逻辑 / Handle knockdown logic"""
+func physics_process(delta: float) -> void:
+	## 处理击倒逻辑 / Handle knockdown logic
 	if not character:
 		return
 
@@ -46,5 +46,5 @@ func process_physics(delta: float) -> void:
 	# 检查击倒是否完成 / Check if knockdown finished
 	if knockdown_progress >= 1.0:
 		character.velocity = Vector2.ZERO
-		state_machine.transition_to("PlayerIdleState")
+		state_machine.transition_to_by_name("IdleState")
 		return

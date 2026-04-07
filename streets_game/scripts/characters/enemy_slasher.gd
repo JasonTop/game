@@ -20,16 +20,15 @@ func _ready() -> void:
 	super()
 
 
+## 获取当前速度 / Get current speed
 func get_current_speed() -> float:
-	"""获取当前速度 / Get current speed"""
 	if is_dashing:
 		return dash_speed
 	return speed
 
 
-## 检查是否应该冲刺 / Check if should dash
+## 检查敌人是否应该冲刺 / Check if enemy should dash
 func should_dash() -> bool:
-	"""检查敌人是否应该冲刺 / Check if enemy should dash"""
 	if not target or is_dashing:
 		return false
 
@@ -39,21 +38,18 @@ func should_dash() -> bool:
 
 ## 开始冲刺攻击 / Start dash attack
 func start_dash_attack() -> void:
-	"""开始冲刺攻击 / Start dash attack"""
 	is_dashing = true
 	if state_machine:
-		state_machine.transition_to("EnemyDashAttackState")
+		state_machine.transition_to_by_name("DashAttackState")
 
 
 ## 结束冲刺攻击 / End dash attack
 func end_dash_attack() -> void:
-	"""结束冲刺攻击 / End dash attack"""
 	is_dashing = false
 
 
-## 执行斜线攻击 / Perform slash attack
+## 执行斜线攻击 / Execute slash attack
 func perform_slash() -> void:
-	"""执行斜线攻击 / Execute slash attack"""
 	if not target:
 		return
 

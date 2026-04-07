@@ -84,9 +84,9 @@ func _apply_effect(player: Node2D) -> void:
 			# 恢复玩家生命值 | Restore player health
 			if player.has_method("heal"):
 				player.heal(value)
-			elif player.has_property("current_health"):
-				player.current_health = min(
-					player.current_health + value,
+			elif "health" in player and "max_health" in player:
+				player.health = min(
+					player.health + value,
 					player.max_health
 				)
 
@@ -109,9 +109,13 @@ func _apply_effect(player: Node2D) -> void:
 
 ## 播放收集声音 | Play collection sound
 func _play_collect_sound() -> void:
+	# 检查音效文件是否存在 / Check if sound file exists
+	var sound_path = "res://sounds/sfx/pickup.ogg"
+	if not ResourceLoader.exists(sound_path):
+		return
+
 	var audio = AudioStreamPlayer.new()
-	audio.stream = load("res://sounds/sfx/pickup.ogg")
-	audio.bus = "SFX"
+	audio.stream = load(sound_path)
 	audio.volume_db = 0.0
 	add_child(audio)
 	audio.play()

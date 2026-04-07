@@ -15,7 +15,7 @@ var state_machine: StateMachine
 
 
 func _ready() -> void:
-	"""Initialize state references when the node enters the scene tree."""
+	## Initialize state references when the node enters the scene tree.
 	# Get the parent StateMachine node
 	# 获取父节点状态机
 	state_machine = get_parent()
@@ -29,14 +29,14 @@ func _ready() -> void:
 ## Called when entering this state
 ## 进入此状态时调用
 func enter() -> void:
-	"""Override this method to handle state entry logic."""
+	## Override this method to handle state entry logic.
 	pass
 
 
 ## Called when exiting this state
 ## 退出此状态时调用
 func exit() -> void:
-	"""Override this method to handle state exit logic."""
+	## Override this method to handle state exit logic.
 	pass
 
 
@@ -45,7 +45,7 @@ func exit() -> void:
 ##
 ## @param event - The input event to process
 func input_process(event: InputEvent) -> void:
-	"""Override this method to handle input in this state."""
+	## Override this method to handle input in this state.
 	pass
 
 
@@ -54,7 +54,7 @@ func input_process(event: InputEvent) -> void:
 ##
 ## @param delta - Time elapsed since last frame in seconds
 func process_frame(delta: float) -> void:
-	"""Override this method for per-frame updates (animations, timers, etc)."""
+	## Override this method for per-frame updates (animations, timers, etc).
 	pass
 
 
@@ -63,7 +63,7 @@ func process_frame(delta: float) -> void:
 ##
 ## @param delta - Physics frame time in seconds
 func physics_process(delta: float) -> void:
-	"""Override this method for physics updates (velocity changes, collision checks)."""
+	## Override this method for physics updates (velocity changes, collision checks).
 	pass
 
 

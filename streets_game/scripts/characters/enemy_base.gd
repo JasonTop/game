@@ -37,9 +37,8 @@ func _physics_process(delta: float) -> void:
 		can_attack = true
 
 
-## 请求攻击槽 / Request attack slot
+## 请求权限进行攻击 / Request permission to attack
 func request_attack_slot() -> bool:
-	"""请求权限进行攻击 / Request permission to attack"""
 	if not can_attack or has_attack_slot:
 		return false
 
@@ -49,41 +48,35 @@ func request_attack_slot() -> bool:
 	return true
 
 
-## 释放攻击槽 / Release attack slot
+## 释放攻击权限 / Release attack permission
 func release_attack_slot() -> void:
-	"""释放攻击权限 / Release attack permission"""
 	has_attack_slot = false
 
 
-## 设置目标 / Set target
+## 设置AI目标 / Set AI target
 func set_target(new_target: Node2D) -> void:
-	"""设置AI目标 / Set AI target"""
 	target = new_target
 
 
 ## 获取到目标的距离 / Get distance to target
 func get_distance_to_target() -> float:
-	"""获取到目标的距离 / Get distance to target"""
 	if not target:
 		return 999.0
 	return global_position.distance_to(target.global_position)
 
 
-## 检查目标在范围内 / Check if target in range
+## 检查目标是否在检测范围内 / Check if target in detection range
 func is_target_in_range() -> bool:
-	"""检查目标是否在检测范围内 / Check if target in detection range"""
 	return get_distance_to_target() <= detection_range
 
 
-## 检查目标在攻击范围内 / Check if target in attack range
+## 检查目标是否在攻击范围内 / Check if target in attack range
 func is_target_in_attack_range() -> bool:
-	"""检查目标是否在攻击范围内 / Check if target in attack range"""
 	return get_distance_to_target() <= attack_range
 
 
-## 朝向目标 / Face target
+## 朝向目标 / Face the target
 func face_target() -> void:
-	"""朝向目标 / Face the target"""
 	if not target:
 		return
 
@@ -92,17 +85,15 @@ func face_target() -> void:
 		face_direction(sign(direction_to_target))
 
 
-## 死亡时掉落物品 / Drop items on death
+## 死亡时随机掉落物品 / Randomly drop items on death
 func drop_items() -> void:
-	"""死亡时随机掉落物品 / Randomly drop items on death"""
 	# 这个方法由SpawnManager或GameManager调用 / Called by SpawnManager or GameManager
 	# 子类可以覆盖此方法添加特定的掉落物 / Subclasses can override to add specific drops
 	pass
 
 
-## 覆盖死亡方法 / Override death method
+## 死亡处理 / Handle death
 func die() -> void:
-	"""死亡处理 / Handle death"""
 	if not is_alive:
 		return
 
@@ -115,4 +106,4 @@ func die() -> void:
 
 	# 过渡到死亡状态 / Transition to death state
 	if state_machine:
-		state_machine.transition_to("EnemyDeathState")
+		state_machine.transition_to_by_name("DeathState")

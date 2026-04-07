@@ -22,14 +22,13 @@ func _ready() -> void:
 	super()
 
 
+## 获取当前速度 / Get current speed
 func get_current_speed() -> float:
-	"""获取当前速度 / Get current speed"""
 	return speed
 
 
-## 检查是否应该后退 / Check if should retreat
+## 检查敌人是否应该后退 / Check if enemy should retreat
 func should_retreat() -> bool:
-	"""检查敌人是否应该后退 / Check if enemy should retreat"""
 	if not target:
 		return false
 
@@ -37,9 +36,8 @@ func should_retreat() -> bool:
 	return distance < preferred_distance
 
 
-## 检查是否应该向前 / Check if should advance
+## 检查敌人是否应该向前 / Check if enemy should advance
 func should_advance() -> bool:
-	"""检查敌人是否应该向前 / Check if enemy should advance"""
 	if not target:
 		return false
 
@@ -49,16 +47,14 @@ func should_advance() -> bool:
 
 ## 检查是否可以投掷 / Check if can throw
 func can_throw() -> bool:
-	"""检查是否可以投掷 / Check if can throw"""
 	if not target or is_throwing:
 		return false
 
 	return get_distance_to_target() <= throw_range
 
 
-## 执行投掷攻击 / Perform throw attack
+## 执行投掷攻击 / Execute throw attack
 func perform_throw() -> void:
-	"""执行投掷攻击 / Execute throw attack"""
 	if not target or not projectile_scene:
 		return
 

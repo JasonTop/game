@@ -10,7 +10,7 @@ var has_dealt_damage: bool = false
 
 
 func enter() -> void:
-	"""进入攻击状态 / Enter attack state"""
+	## 进入攻击状态 / Enter attack state
 	if not character:
 		return
 
@@ -22,8 +22,8 @@ func enter() -> void:
 	character.disable_hitbox()
 
 
-func process_physics(delta: float) -> void:
-	"""处理攻击逻辑 / Handle attack logic"""
+func physics_process(delta: float) -> void:
+	## 处理攻击逻辑 / Handle attack logic
 	if not character:
 		return
 
@@ -55,5 +55,5 @@ func process_physics(delta: float) -> void:
 		character.disable_hitbox()
 
 		# 返回靠近状态 / Return to approach state
-		state_machine.transition_to("EnemyApproachState")
+		state_machine.transition_to_by_name("ApproachState")
 		return

@@ -9,14 +9,14 @@ var can_act: bool = false
 
 
 func enter() -> void:
-	"""进入抓取状态 / Enter grab state"""
+	## 进入抓取状态 / Enter grab state
 	if not character:
 		return
 
 	var player = character as Player
 
 	if not player.grab_target:
-		state_machine.transition_to("PlayerIdleState")
+		state_machine.transition_to_by_name("IdleState")
 		return
 
 	character.animation_player.play("grab")
@@ -28,8 +28,8 @@ func enter() -> void:
 	character.global_position = player.grab_target.global_position
 
 
-func process_physics(delta: float) -> void:
-	"""处理抓取逻辑 / Handle grab logic"""
+func physics_process(delta: float) -> void:
+	## 处理抓取逻辑 / Handle grab logic
 	if not character:
 		return
 
@@ -38,7 +38,7 @@ func process_physics(delta: float) -> void:
 	# 检查抓取目标是否还活着 / Check if grab target is still alive
 	if not player.grab_target or not player.grab_target.is_alive:
 		player.release_grab()
-		state_machine.transition_to("PlayerIdleState")
+		state_machine.transition_to_by_name("IdleState")
 		return
 
 	# 保持与被抓取目标在一起 / Stay with grabbed target
@@ -68,11 +68,11 @@ func process_physics(delta: float) -> void:
 				throw_direction.y *= player.y_speed_ratio
 
 			player.throw_enemy(throw_direction)
-			state_machine.transition_to("PlayerIdleState")
+			state_machine.transition_to_by_name("IdleState")
 			return
 
 	# 检查释放条件 / Check release conditions
 	if Input.is_action_just_pressed("grab"):
 		player.release_grab()
-		state_machine.transition_to("PlayerIdleState")
+		state_machine.transition_to_by_name("IdleState")
 		return

@@ -8,7 +8,7 @@ var hitbox_active: bool = false
 
 
 func enter() -> void:
-	"""进入攻击状态 / Enter attack state"""
+	## 进入攻击状态 / Enter attack state
 	if not character:
 		return
 
@@ -34,8 +34,8 @@ func enter() -> void:
 	player.is_attacking = false
 
 
-func process_physics(delta: float) -> void:
-	"""处理攻击逻辑 / Handle attack logic"""
+func physics_process(delta: float) -> void:
+	## 处理攻击逻辑 / Handle attack logic
 	if not character:
 		return
 
@@ -66,7 +66,7 @@ func process_physics(delta: float) -> void:
 			return
 		else:
 			# 组合结束，返回闲置 / Combo finished, return to idle
-			state_machine.transition_to("PlayerIdleState")
+			state_machine.transition_to_by_name("IdleState")
 			return
 
 	# 攻击期间保持位置 / Maintain position during attack

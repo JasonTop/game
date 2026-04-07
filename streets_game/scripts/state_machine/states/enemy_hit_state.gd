@@ -8,7 +8,7 @@ var hit_progress: float = 0.0
 
 
 func enter() -> void:
-	"""进入被击状态 / Enter hit state"""
+	## 进入被击状态 / Enter hit state
 	if character:
 		character.animation_player.play("hit")
 		character.disable_hitbox()
@@ -19,12 +19,12 @@ func enter() -> void:
 			enemy.release_attack_slot()
 
 		# 短暂无敌 / Brief invincibility
-		character.set_invincible(True)
+		character.set_invincible(true)
 		hit_progress = 0.0
 
 
-func process_physics(delta: float) -> void:
-	"""处理被击逻辑 / Handle hit logic"""
+func physics_process(delta: float) -> void:
+	## 处理被击逻辑 / Handle hit logic
 	if not character:
 		return
 
@@ -37,5 +37,5 @@ func process_physics(delta: float) -> void:
 	# 检查被击是否完成 / Check if hit finished
 	if hit_progress >= 1.0:
 		character.set_invincible(false)
-		state_machine.transition_to("EnemyApproachState")
+		state_machine.transition_to_by_name("ApproachState")
 		return

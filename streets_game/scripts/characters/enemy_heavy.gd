@@ -19,14 +19,13 @@ func _ready() -> void:
 	super()
 
 
+## 获取当前速度 / Get current speed
 func get_current_speed() -> float:
-	"""获取当前速度 / Get current speed"""
 	return speed
 
 
-## 覆盖受伤方法以实现超级护甲 / Override take_damage for super armor
+## 受伤处理（超级护甲）/ Take damage with super armor
 func take_damage(amount: int, knockback_direction: Vector2 = Vector2.ZERO) -> void:
-	"""受伤处理（超级护甲）/ Take damage with super armor"""
 	if is_invincible or not is_alive:
 		return
 
@@ -47,9 +46,8 @@ func take_damage(amount: int, knockback_direction: Vector2 = Vector2.ZERO) -> vo
 		die()
 
 
-## 执行强力攻击 / Perform heavy punch attack
+## 执行强力挥拳攻击 / Execute heavy punch attack
 func perform_heavy_punch() -> void:
-	"""执行强力挥拳攻击 / Execute heavy punch attack"""
 	if not target:
 		return
 

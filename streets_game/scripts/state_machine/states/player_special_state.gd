@@ -12,7 +12,7 @@ var hit_enemies: Array = []
 
 
 func enter() -> void:
-	"""进入特殊技能状态 / Enter special state"""
+	## 进入特殊技能状态 / Enter special state
 	if not character:
 		return
 
@@ -31,8 +31,8 @@ func enter() -> void:
 	player.wants_special = false
 
 
-func process_physics(delta: float) -> void:
-	"""处理特殊技能逻辑 / Handle special move logic"""
+func physics_process(delta: float) -> void:
+	## 处理特殊技能逻辑 / Handle special move logic
 	if not character:
 		return
 
@@ -64,14 +64,15 @@ func process_physics(delta: float) -> void:
 		if hit_enemies.size() > 0:
 			player.recover_from_special(hit_enemies.size() * 5)
 
-		state_machine.transition_to("PlayerIdleState")
+		state_machine.transition_to_by_name("IdleState")
 		return
 
 
 ## 跟踪被击中的敌人 / Track hit enemies
 func on_hitbox_hit(enemy: Node) -> void:
-	"""当命中箱击中敌人时调用 / Called when hitbox hits enemy"""
+	## 当命中箱击中敌人时调用 / Called when hitbox hits enemy
 	if enemy is BaseCharacter and enemy not in hit_enemies:
 		hit_enemies.append(enemy)
-		var knockback = Vector2(player.facing_direction * 200, -50)
-		enemy.take_damage(character.special_damage, knockback)
+		var knockback = Vector2(character.facing_direction * 200, -50)
+		var player = character as Player
+		enemy.take_damage(player.special_damage, knockback)

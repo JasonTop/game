@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://b5xj44cfn8vu3"]
+
+[ext_resource type="Script" path="res://scripts/characters/player_controller.gd" id="1_abc06"]
+[ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="2_abc07"]
+[ext_resource type="Script" path="res://scripts/combat/hurtbox.gd" id="3_abc08"]
+[ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="4_abc09"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/player_idle_state.gd" id="5_abc0a"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/player_walk_state.gd" id="6_abc0b"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/player_attack_state.gd" id="7_abc0c"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/player_jump_state.gd" id="8_abc0d"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/player_dash_state.gd" id="9_abc0e"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/player_grab_state.gd" id="10_abc0f"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/player_special_state.gd" id="11_abc0g"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/player_star_move_state.gd" id="12_abc0h"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/player_hit_state.gd" id="13_abc0i"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/player_knockdown_state.gd" id="14_abc0j"]
+[ext_resource type="Script" path="res://scripts/systems/camera_controller.gd" id="15_abc0k"]
+[ext_resource type="Texture2D" path="res://assets/sprites/players/player.png" id="16_abc0l"]
+[ext_resource type="Texture2D" path="res://assets/sprites/effects/shadow.png" id="17_abc0m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(24, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2"]
+size = Vector2(30, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3"]
+size = Vector2(20, 40)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 30.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_abc06")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+position = Vector2(0, 20)
+texture = ExtResource("17_abc0m")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("16_abc0l")
+hframes = 30
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 64
+script = ExtResource("2_abc07")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(25, 0)
+shape = SubResource("RectangleShape2D_2")
+disabled = true
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 32
+script = ExtResource("3_abc08")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_3")
+
+[node name="GrabZone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabZone"]
+shape = SubResource("CircleShape2D_1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("4_abc09")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("5_abc0a")
+
+[node name="WalkState" type="Node" parent="StateMachine"]
+script = ExtResource("6_abc0b")
+
+[node name="AttackState" type="Node" parent="StateMachine"]
+script = ExtResource("7_abc0c")
+
+[node name="JumpState" type="Node" parent="StateMachine"]
+script = ExtResource("8_abc0d")
+
+[node name="DashState" type="Node" parent="StateMachine"]
+script = ExtResource("9_abc0e")
+
+[node name="GrabState" type="Node" parent="StateMachine"]
+script = ExtResource("10_abc0f")
+
+[node name="SpecialState" type="Node" parent="StateMachine"]
+script = ExtResource("11_abc0g")
+
+[node name="StarMoveState" type="Node" parent="StateMachine"]
+script = ExtResource("12_abc0h")
+
+[node name="HitState" type="Node" parent="StateMachine"]
+script = ExtResource("13_abc0i")
+
+[node name="KnockdownState" type="Node" parent="StateMachine"]
+script = ExtResource("14_abc0j")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+script = ExtResource("15_abc0k")

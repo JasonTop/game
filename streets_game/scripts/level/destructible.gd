@@ -105,10 +105,13 @@ func destroy() -> void:
 
 ## 播放命中声音 | Play hit sound
 func _play_hit_sound() -> void:
-	# 创建AudioStreamPlayer进行单次命中音效 | Create temp audio player for hit sound
+	# 检查音效文件是否存在 / Check if sound file exists
+	var sound_path = "res://sounds/sfx/hit_object.ogg"
+	if not ResourceLoader.exists(sound_path):
+		return
+
 	var audio = AudioStreamPlayer.new()
-	audio.stream = load("res://sounds/sfx/hit_object.ogg")
-	audio.bus = "SFX"
+	audio.stream = load(sound_path)
 	audio.volume_db = -5.0
 	add_child(audio)
 	audio.play()

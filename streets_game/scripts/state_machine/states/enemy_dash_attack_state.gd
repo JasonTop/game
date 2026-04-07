@@ -10,7 +10,7 @@ var y_speed_ratio: float = 0.6
 
 
 func enter() -> void:
-	"""进入冲刺攻击状态 / Enter dash attack state"""
+	## 进入冲刺攻击状态 / Enter dash attack state
 	if character:
 		character.animation_player.play("dash_attack")
 		character.disable_hitbox()
@@ -18,8 +18,8 @@ func enter() -> void:
 		has_dealt_damage = false
 
 
-func process_physics(delta: float) -> void:
-	"""处理冲刺攻击逻辑 / Handle dash attack logic"""
+func physics_process(delta: float) -> void:
+	## 处理冲刺攻击逻辑 / Handle dash attack logic
 	if not character:
 		return
 
@@ -57,5 +57,5 @@ func process_physics(delta: float) -> void:
 		if enemy is EnemySlasher:
 			(enemy as EnemySlasher).end_dash_attack()
 
-		state_machine.transition_to("EnemyApproachState")
+		state_machine.transition_to_by_name("ApproachState")
 		return

@@ -8,7 +8,7 @@ var idle_duration: float = 1.0
 
 
 func enter() -> void:
-	"""进入闲置状态 / Enter idle state"""
+	## 进入闲置状态 / Enter idle state
 	if character:
 		character.animation_player.play("idle")
 		character.reset_velocity()
@@ -16,8 +16,8 @@ func enter() -> void:
 		idle_timer = 0.0
 
 
-func process_physics(delta: float) -> void:
-	"""处理闲置逻辑 / Handle idle logic"""
+func physics_process(delta: float) -> void:
+	## 处理闲置逻辑 / Handle idle logic
 	if not character:
 		return
 
@@ -32,10 +32,10 @@ func process_physics(delta: float) -> void:
 
 	# 检查是否应该靠近目标 / Check if should approach target
 	if idle_timer >= idle_duration and enemy.is_target_in_range():
-		state_machine.transition_to("EnemyApproachState")
+		state_machine.transition_to_by_name("ApproachState")
 		return
 
 	# 始终检查目标是否在范围内 / Always check if target in range
 	if enemy.is_target_in_range():
-		state_machine.transition_to("EnemyApproachState")
+		state_machine.transition_to_by_name("ApproachState")
 		return

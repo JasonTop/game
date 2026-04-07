@@ -23,7 +23,7 @@ var _character: Node
 
 
 func _ready() -> void:
-	"""Initialize the hurtbox."""
+	## Initialize the hurtbox
 	# Get the parent character
 	# 获取父角色
 	_character = get_parent()
@@ -38,7 +38,6 @@ func _ready() -> void:
 ## Called every frame to update invincibility duration
 ## 每帧调用以更新无敌持续时间
 func _process(delta: float) -> void:
-	"""Update invincibility timer."""
 	if is_invincible and _invincibility_timer > 0.0:
 		_invincibility_timer -= delta
 		if _invincibility_timer <= 0.0:
@@ -61,10 +60,6 @@ func hurt(
 	knockback: Vector2,
 	hit_stun: float
 ) -> void:
-	"""
-	Apply damage from a hitbox.
-	应用来自伤害判定盒的伤害。
-	"""
 	if is_invincible:
 		return
 
@@ -82,10 +77,6 @@ func hurt(
 ## @param invincible - Whether to set invincible
 ## @param duration - Optional duration in seconds (0 = indefinite)
 func set_invincible(invincible: bool, duration: float = 0.0) -> void:
-	"""
-	Set invincibility state.
-	设置无敌状态。
-	"""
 	is_invincible = invincible
 
 	if invincible and duration > 0.0:
@@ -101,7 +92,6 @@ func set_invincible(invincible: bool, duration: float = 0.0) -> void:
 ## Determine if _process is needed
 ## 确定是否需要_process
 func _needs_process() -> bool:
-	"""Check if _process needs to run."""
 	return is_invincible and _invincibility_timer > 0.0
 
 
@@ -113,10 +103,6 @@ func _needs_process() -> bool:
 ##
 ## @param duration - How long to show the invincibility effect
 func flash_invincibility(duration: float = 0.3) -> void:
-	"""
-	Flash the hurtbox visually to indicate invincibility.
-	闪烁伤害判定盒以在视觉上指示无敌。
-	"""
 	# Get the character's modulate if available
 	# 如果可用，获取角色的调制
 	if _character and _character.has_method("get_modulate"):
@@ -140,7 +126,6 @@ func flash_invincibility(duration: float = 0.3) -> void:
 ## Get the center position of this hurtbox
 ## 获取此伤害判定盒的中心位置
 func get_center() -> Vector2:
-	"""Get the global center position of this hurtbox."""
 	if has_meta("shape_cache"):
 		var shape = get_meta("shape_cache")
 		if shape:

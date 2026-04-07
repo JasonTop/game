@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://c56kwvn8pk5yb"]
+
+[ext_resource type="Script" path="res://scripts/characters/enemy_heavy.gd" id="1_abc10"]
+[ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="2_abc11"]
+[ext_resource type="Script" path="res://scripts/combat/hurtbox.gd" id="3_abc12"]
+[ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="4_abc13"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/enemy_idle_state.gd" id="5_abc14"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/enemy_approach_state.gd" id="6_abc15"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/enemy_attack_state.gd" id="7_abc16"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/enemy_retreat_state.gd" id="8_abc17"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/enemy_hit_state.gd" id="9_abc18"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/enemy_knockdown_state.gd" id="10_abc19"]
+[ext_resource type="Script" path="res://scripts/state_machine/states/enemy_death_state.gd" id="11_abc1a"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/heavy.png" id="12_abc1b"]
+[ext_resource type="Texture2D" path="res://assets/sprites/effects/shadow.png" id="13_abc1c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(24, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2"]
+size = Vector2(30, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3"]
+size = Vector2(20, 40)
+
+[node name="Heavy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_abc10")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+position = Vector2(0, 20)
+texture = ExtResource("13_abc1c")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("12_abc1b")
+hframes = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 16
+script = ExtResource("2_abc11")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(25, 0)
+shape = SubResource("RectangleShape2D_2")
+disabled = true
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 8
+script = ExtResource("3_abc12")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("4_abc13")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("5_abc14")
+
+[node name="ApproachState" type="Node" parent="StateMachine"]
+script = ExtResource("6_abc15")
+
+[node name="AttackState" type="Node" parent="StateMachine"]
+script = ExtResource("7_abc16")
+
+[node name="RetreatState" type="Node" parent="StateMachine"]
+script = ExtResource("8_abc17")
+
+[node name="HitState" type="Node" parent="StateMachine"]
+script = ExtResource("9_abc18")
+
+[node name="KnockdownState" type="Node" parent="StateMachine"]
+script = ExtResource("10_abc19")
+
+[node name="DeathState" type="Node" parent="StateMachine"]
+script = ExtResource("11_abc1a")

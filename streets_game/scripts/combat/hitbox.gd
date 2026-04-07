@@ -36,7 +36,7 @@ var _hit_hurtboxes: Array[Hurtbox] = []
 
 
 func _ready() -> void:
-	"""Initialize the hitbox."""
+	## Initialize the hitbox
 	# Set up area collision signals
 	# 设置区域碰撞信号
 	area_entered.connect(_on_area_entered)
@@ -50,7 +50,6 @@ func _ready() -> void:
 ## Called when the hitbox activates (during attack animation)
 ## 伤害判定盒激活时调用（在攻击动画期间）
 func activate() -> void:
-	"""Enable this hitbox for collision detection."""
 	_hit_hurtboxes.clear()  # Reset hit tracking
 	# 重置击中追踪
 	monitoring = true
@@ -60,7 +59,6 @@ func activate() -> void:
 ## Called when the hitbox deactivates (attack animation ends)
 ## 伤害判定盒停用时调用（攻击动画结束）
 func deactivate() -> void:
-	"""Disable this hitbox and clear hit tracking."""
 	monitoring = false
 	monitorable = false
 	_hit_hurtboxes.clear()
@@ -72,11 +70,6 @@ func deactivate() -> void:
 ## @param target - The target to knockback
 ## @returns The knockback force vector adjusted for direction
 func get_knockback_force(target: Node2D) -> Vector2:
-	"""
-	Calculate knockback force adjusted for hit direction.
-	Knockback always pushes away from the hitbox owner.
-	击退力总是从伤害判定盒所有者推开。
-	"""
 	if not owner_character:
 		return knockback_force
 
@@ -89,7 +82,6 @@ func get_knockback_force(target: Node2D) -> Vector2:
 ##
 ## @param area - The Area2D that entered the hitbox's collision area
 func _on_area_entered(area: Area2D) -> void:
-	"""Handle collision with a hurtbox."""
 	# Check if the collided area is a Hurtbox
 	# 检查碰撞区域是否为伤害判定盒
 	if not area is Hurtbox:

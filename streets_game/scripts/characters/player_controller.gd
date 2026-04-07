@@ -64,7 +64,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-## 更新输入 / Update input detection
+## 更新输入检测 / Update input detection
 func _update_input() -> void:
 	input_direction = Vector2.ZERO
 
@@ -116,7 +116,7 @@ func start_attack() -> void:
 
 	# 过渡到攻击状态 / Transition to attack state
 	if state_machine:
-		state_machine.transition_to("PlayerAttackState")
+		state_machine.transition_to_by_name("AttackState")
 
 
 ## 开始跳跃 / Start jump
@@ -128,7 +128,7 @@ func start_jump() -> void:
 	jump_start_y = sprite_2d.position.y
 
 	if state_machine:
-		state_machine.transition_to("PlayerJumpState")
+		state_machine.transition_to_by_name("JumpState")
 
 
 ## 开始冲刺 / Start dash
@@ -137,7 +137,7 @@ func start_dash() -> void:
 		return
 
 	if state_machine:
-		state_machine.transition_to("PlayerDashState")
+		state_machine.transition_to_by_name("DashState")
 
 
 ## 抓取敌人 / Grab enemy
@@ -149,7 +149,7 @@ func grab_enemy(enemy: BaseCharacter) -> void:
 	is_grabbing = true
 
 	if state_machine:
-		state_machine.transition_to("PlayerGrabState")
+		state_machine.transition_to_by_name("GrabState")
 
 
 ## 释放抓取 / Release grab
@@ -169,7 +169,7 @@ func throw_enemy(direction: Vector2) -> void:
 	grab_target.take_damage(15, knockback)
 
 	release_grab()
-	state_machine.transition_to("PlayerIdleState")
+	state_machine.transition_to_by_name("IdleState")
 
 
 ## 使用特殊技能 / Use special move
@@ -181,7 +181,7 @@ func use_special() -> void:
 	health -= special_health_cost
 
 	if state_machine:
-		state_machine.transition_to("PlayerSpecialState")
+		state_machine.transition_to_by_name("SpecialState")
 
 
 ## 星星移动 / Star move (invincible powerup attack)
@@ -192,7 +192,7 @@ func use_star_move() -> void:
 	star_count -= 1
 
 	if state_machine:
-		state_machine.transition_to("PlayerStarMoveState")
+		state_machine.transition_to_by_name("StarMoveState")
 
 
 ## 获得星星 / Gain star
@@ -212,7 +212,7 @@ func take_hit(knockback_direction: Vector2 = Vector2.ZERO) -> void:
 		return
 
 	if state_machine:
-		state_machine.transition_to("PlayerHitState")
+		state_machine.transition_to_by_name("HitState")
 
 	if knockback_direction != Vector2.ZERO:
 		velocity = knockback_direction
@@ -224,12 +224,12 @@ func take_knockdown(knockback_direction: Vector2 = Vector2.ZERO) -> void:
 		return
 
 	if state_machine:
-		state_machine.transition_to("PlayerKnockdownState")
+		state_machine.transition_to_by_name("KnockdownState")
 
 	if knockback_direction != Vector2.ZERO:
 		velocity = knockback_direction
 
 
-## 覆盖基础方法 / Override base method
+## 获取当前速度 / Get current speed
 func get_current_speed() -> float:
 	return speed

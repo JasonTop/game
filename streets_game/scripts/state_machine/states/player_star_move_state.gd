@@ -12,7 +12,7 @@ var hit_enemies: Array = []
 
 
 func enter() -> void:
-	"""进入星星移动状态 / Enter star move state"""
+	## 进入星星移动状态 / Enter star move state
 	if not character:
 		return
 
@@ -31,8 +31,8 @@ func enter() -> void:
 	player.wants_star_move = false
 
 
-func process_physics(delta: float) -> void:
-	"""处理星星移动逻辑 / Handle star move logic"""
+func physics_process(delta: float) -> void:
+	## 处理星星移动逻辑 / Handle star move logic
 	if not character:
 		return
 
@@ -64,13 +64,13 @@ func process_physics(delta: float) -> void:
 		character.disable_hitbox()
 		character.set_invincible(false)
 
-		state_machine.transition_to("PlayerIdleState")
+		state_machine.transition_to_by_name("IdleState")
 		return
 
 
 ## 跟踪被击中的敌人 / Track hit enemies
 func on_hitbox_hit(enemy: Node) -> void:
-	"""当命中箱击中敌人时调用 / Called when hitbox hits enemy"""
+	## 当命中箱击中敌人时调用 / Called when hitbox hits enemy
 	if enemy is BaseCharacter and enemy not in hit_enemies:
 		hit_enemies.append(enemy)
 		# 星星移动的伤害更高 / Star move does more damage

@@ -37,12 +37,12 @@ signal combo_ended(final_count: int, final_damage: int, bonus_score: int)
 
 
 func _ready() -> void:
-	"""Initialize the combo manager."""
+	## Initialize the combo manager
 	reset_combo()
 
 
 func _process(delta: float) -> void:
-	"""Update combo timeout timer."""
+	## Update combo timeout timer
 	if combo_count > 0 and _timeout_timer > 0.0:
 		_timeout_timer -= delta
 
@@ -58,10 +58,6 @@ func _process(delta: float) -> void:
 ##
 ## @param damage - Amount of damage dealt in this hit
 func add_hit(damage: int) -> void:
-	"""
-	Add a hit to the current combo.
-	添加击中到当前连击。
-	"""
 	# Initialize combo if this is the first hit
 	# 如果这是第一次击中，初始化连击
 	if combo_count == 0:
@@ -91,20 +87,12 @@ func add_hit(damage: int) -> void:
 ##
 ## @returns The bonus score from the current combo
 func get_combo_bonus() -> int:
-	"""
-	Calculate the combo bonus score.
-	连击奖励 = 连击计数 * 100点
-	"""
 	return combo_count * COMBO_SCORE_BONUS
 
 
 ## Manually end the combo
 ## 手动结束连击
 func end_combo() -> void:
-	"""
-	End the current combo and emit the combo_ended signal.
-	结束当前连击并发出combo_ended信号。
-	"""
 	if combo_count == 0:
 		return
 
@@ -131,10 +119,6 @@ func end_combo() -> void:
 ## Reset the combo to initial state
 ## 将连击重置为初始状态
 func reset_combo() -> void:
-	"""
-	Reset the combo counter and damage.
-	重置连击计数器和伤害。
-	"""
 	combo_count = 0
 	combo_damage = 0
 	_timeout_timer = 0.0
@@ -144,7 +128,6 @@ func reset_combo() -> void:
 ## Called when a combo starts (first hit)
 ## 当连击开始时调用（第一次击中）
 func _start_combo() -> void:
-	"""Internal method called when a combo begins."""
 	# Enable process to track timeout
 	# 启用处理以追踪超时
 	set_process(true)
@@ -158,10 +141,6 @@ func _start_combo() -> void:
 ##
 ## @returns A formatted string like "5 Hit Combo - 250 Damage"
 func get_combo_string() -> String:
-	"""
-	Get a formatted string representation of the current combo.
-	获取当前连击的格式化字符串表示。
-	"""
 	if combo_count == 0:
 		return ""
 
@@ -176,8 +155,4 @@ func get_combo_string() -> String:
 ##
 ## @returns The time in seconds until the combo resets
 func get_remaining_timeout() -> float:
-	"""
-	Get the remaining time before combo resets.
-	获取连击重置前的剩余时间。
-	"""
 	return max(0.0, _timeout_timer)

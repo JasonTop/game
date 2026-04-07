@@ -9,7 +9,7 @@ var invincibility_duration: float = 0.2
 
 
 func enter() -> void:
-	"""进入冲刺状态 / Enter dash state"""
+	## 进入冲刺状态 / Enter dash state
 	if not character:
 		return
 
@@ -26,8 +26,8 @@ func enter() -> void:
 	player.wants_dash = false
 
 
-func process_physics(delta: float) -> void:
-	"""处理冲刺物理 / Handle dash physics"""
+func physics_process(delta: float) -> void:
+	## 处理冲刺物理 / Handle dash physics
 	if not character:
 		return
 
@@ -50,7 +50,7 @@ func process_physics(delta: float) -> void:
 	# 检查冲刺是否结束 / Check if dash finished
 	if dash_progress >= 1.0:
 		character.velocity = Vector2.ZERO
-		state_machine.transition_to("PlayerIdleState")
+		state_machine.transition_to_by_name("IdleState")
 		return
 
 	# 冲刺期间可以攻击 / Can attack during dash

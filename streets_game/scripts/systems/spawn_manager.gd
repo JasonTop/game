@@ -8,7 +8,9 @@
 ## 此系统管理敌人生成，追踪活跃敌人，并控制
 ## 有多少敌人可以同时攻击。这防止玩家
 ## 被太多同时攻击所淹没。
-class_name SpawnManager extends Node
+extends Node
+## NOTE: class_name removed to avoid conflict with scripts/managers/spawn_manager.gd (autoloaded version)
+## 注意: 移除class_name以避免与autoload版本冲突
 
 ## Maximum number of enemies allowed in the scene at once
 ## 场景中一次允许的最大敌人数
@@ -20,7 +22,7 @@ class_name SpawnManager extends Node
 
 ## Dictionary of active enemies tracked by their node path
 ## 通过节点路径追踪的活跃敌人字典
-var _active_enemies: Dictionary[Node, bool] = {}
+var _active_enemies: Dictionary = {}
 
 ## Array of enemies currently attacking
 ## 当前攻击的敌人数组
@@ -52,10 +54,6 @@ signal attack_slot_changed(available_slots: int, max_slots: int)
 ## @param enemy - The enemy node to register
 ## @returns true if registration was successful
 func register_enemy(enemy: Node) -> bool:
-	"""
-	Register an enemy with the spawn manager.
-	向生成管理器注册敌人。
-	"""
 	# Check if we've reached max enemy limit
 	# 检查我们是否已达到最大敌人限制
 	if _active_enemies.size() >= max_active_enemies:
@@ -104,10 +102,6 @@ func register_enemy(enemy: Node) -> bool:
 ##
 ## @param enemy - The enemy node to unregister
 func unregister_enemy(enemy: Node) -> void:
-	"""
-	Unregister an enemy from the spawn manager.
-	从生成管理器注销敌人。
-	"""
 	if enemy not in _active_enemies:
 		return
 
@@ -153,13 +147,6 @@ func unregister_enemy(enemy: Node) -> void:
 ## @param enemy - The enemy requesting the attack slot
 ## @returns true if the slot was granted, false if slots are full
 func request_attack_slot(enemy: Node) -> bool:
-	"""
-	Request an attack slot for an enemy.
-	为敌人请求攻击槽。
-
-	Returns true if the enemy can attack now, false if they should wait.
-	如果敌人可以立即攻击，返回true，如果应该等待，则返回false。
-	"""
 	# Check if enemy is already attacking
 	# 检查敌人是否已经在攻击
 	if enemy in _attacking_enemies:
@@ -194,10 +181,6 @@ func request_attack_slot(enemy: Node) -> bool:
 ##
 ## @param enemy - The enemy releasing the attack slot
 func release_attack_slot(enemy: Node) -> void:
-	"""
-	Release an attack slot from an enemy.
-	从敌人释放攻击槽。
-	"""
 	if enemy not in _attacking_enemies:
 		return
 
@@ -217,7 +200,6 @@ func release_attack_slot(enemy: Node) -> void:
 ##
 ## @returns The number of available attack slots
 func get_available_attack_slots() -> int:
-	"""Get the number of available attack slots."""
 	return max_simultaneous_attackers - _attacking_enemies.size()
 
 
@@ -227,7 +209,6 @@ func get_available_attack_slots() -> int:
 ## @param enemy - The enemy to check
 ## @returns true if the enemy is in the attacking list
 func is_enemy_attacking(enemy: Node) -> bool:
-	"""Check if an enemy is currently attacking."""
 	return enemy in _attacking_enemies
 
 
@@ -236,28 +217,24 @@ func is_enemy_attacking(enemy: Node) -> bool:
 ##
 ## @returns The number of registered active enemies
 func get_active_enemy_count() -> int:
-	"""Get the number of currently active enemies."""
 	return _active_enemies.size()
 
 
 ## Internal signal handler for enemy death
 ## 敌人死亡的内部信号处理程序
 func _on_enemy_died(enemy: Node) -> void:
-	"""Handle enemy death signal."""
 	unregister_enemy(enemy)
 
 
 ## Internal signal handler for attack start
 ## 攻击开始的内部信号处理程序
 func _on_enemy_attack_started(enemy: Node) -> void:
-	"""Handle enemy attack started signal."""
 	request_attack_slot(enemy)
 
 
 ## Internal signal handler for attack end
 ## 攻击结束的内部信号处理程序
 func _on_enemy_attack_ended(enemy: Node) -> void:
-	"""Handle enemy attack ended signal."""
 	release_attack_slot(enemy)
 
 
@@ -266,10 +243,6 @@ func _on_enemy_attack_ended(enemy: Node) -> void:
 ##
 ## @returns A dictionary with spawn manager status
 func get_stats() -> Dictionary:
-	"""
-	Get current spawn manager statistics.
-	获取当前生成管理器统计信息。
-	"""
 	return {
 		"active_enemies": _active_enemies.size(),
 		"max_enemies": max_active_enemies,

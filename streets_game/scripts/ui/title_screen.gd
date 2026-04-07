@@ -37,22 +37,20 @@ func _ready() -> void:
 	root_control.anchor_right = 1.0
 	root_control.anchor_bottom = 1.0
 
-	# 添加背景色 / Add background color
-	root_control.modulate = Color(0, 0, 0, 1)
-
-	# 添加淡入动画 / Add fade in animation
+	# 添加淡入遮罩 / Add fade-in overlay
 	add_child(transition_rect)
 	transition_rect.color = Color.BLACK
 	transition_rect.anchor_left = 0.0
 	transition_rect.anchor_top = 0.0
 	transition_rect.anchor_right = 1.0
 	transition_rect.anchor_bottom = 1.0
+	transition_rect.z_index = 10  # 确保在最上层 / Ensure on top
 
-	# 淡入 / Fade in
+	# 淡入：遮罩从黑色渐变为透明 / Fade in: overlay fades from black to transparent
 	var tween = create_tween()
 	tween.tween_property(transition_rect, "color:a", 0.0, 0.5)
 	tween.tween_callback(func() -> void:
-		transition_rect.queue_free()
+		transition_rect.visible = false
 		fade_in_complete = true
 	)
 
@@ -131,25 +129,27 @@ func _start_game() -> void:
 	## 开始游戏，加载第一关
 	## Start game, load first level
 
-	# 淡出并加载场景 / Fade out and load scene
+	# 显示遮罩并淡出 / Show overlay and fade out
+	transition_rect.visible = true
+	transition_rect.color = Color(0, 0, 0, 0)
 	var tween = create_tween()
 	tween.tween_property(transition_rect, "color:a", 1.0, 0.5)
-	tween.tween_callback(func() -> void:
-		game_started.emit()
-		# 等待加载场景 / Wait for scene to load
-		await get_tree().create_timer(0.2).timeout
-		# 尝试加载第一关，如果不存在则使用占位符 / Try to load level 1, use placeholder if missing
-		var level_path = "res://scenes/levels/level_01.tscn"
-		if ResourceLoader.exists(level_path):
-			get_tree().change_scene_to_file(level_path)
-		else:
-			# 创建一个测试场景 / Create a test scene
-			print("警告：level_01.tscn 不存在。创建测试场景。 / Warning: level_01.tscn not found. Creating test scene.")
-			var test_scene = Node2D.new()
-			test_scene.name = "TestLevel"
-			get_tree().root.add_child(test_scene)
-			get_tree().root.remove_child(self)
-	)
+	await tween.finished
+
+	game_started.emit()
+	await get_tree().create_timer(0.2).timeout
+
+	# 尝试加载第一关，如果不存在则使用占位符 / Try to load level 1, use placeholder if missing
+	var level_path = "res://scenes/levels/level_01.tscn"
+	if ResourceLoader.exists(level_path):
+		get_tree().change_scene_to_file(level_path)
+	else:
+		# 创建一个测试场景 / Create a test scene
+		print("警告：level_01.tscn 不存在。创建测试场景。 / Warning: level_01.tscn not found. Creating test scene.")
+		var test_scene = Node2D.new()
+		test_scene.name = "TestLevel"
+		get_tree().root.add_child(test_scene)
+		get_tree().root.remove_child(self)
 
 
 func _show_options() -> void:

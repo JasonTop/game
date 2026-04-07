@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bq1pb3qx7hpl2"]
+
+[ext_resource type="Script" path="res://scripts/level/level_01.gd" id="1_abc05"]
+
+[node name="Level01" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_abc05")

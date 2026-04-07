@@ -10,7 +10,7 @@ var original_shadow_y: float = 0.0
 
 
 func enter() -> void:
-	"""进入跳跃状态 / Enter jump state"""
+	## 进入跳跃状态 / Enter jump state
 	if not character:
 		return
 
@@ -25,8 +25,8 @@ func enter() -> void:
 	player.disable_hitbox()  # 跳跃时无法抓取 / Cannot grab while jumping
 
 
-func process_physics(delta: float) -> void:
-	"""处理跳跃物理 / Handle jump physics"""
+func physics_process(delta: float) -> void:
+	## 处理跳跃物理 / Handle jump physics
 	if not character:
 		return
 
@@ -65,7 +65,7 @@ func process_physics(delta: float) -> void:
 			player.start_attack()
 			return
 		else:
-			state_machine.transition_to("PlayerIdleState")
+			state_machine.transition_to_by_name("IdleState")
 			return
 
 	# 跳跃期间的攻击 / Attack during jump

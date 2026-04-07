@@ -8,7 +8,7 @@ var hit_progress: float = 0.0
 
 
 func enter() -> void:
-	"""进入被击状态 / Enter hit state"""
+	## 进入被击状态 / Enter hit state
 	if not character:
 		return
 
@@ -23,8 +23,8 @@ func enter() -> void:
 	character.set_invincible(true)
 
 
-func process_physics(delta: float) -> void:
-	"""处理被击逻辑 / Handle hit logic"""
+func physics_process(delta: float) -> void:
+	## 处理被击逻辑 / Handle hit logic
 	if not character:
 		return
 
@@ -37,5 +37,5 @@ func process_physics(delta: float) -> void:
 	# 检查被击是否完成 / Check if hit finished
 	if hit_progress >= 1.0:
 		character.set_invincible(false)
-		state_machine.transition_to("PlayerIdleState")
+		state_machine.transition_to_by_name("IdleState")
 		return

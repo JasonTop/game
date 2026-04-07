@@ -53,7 +53,7 @@ var _hit_stop_timer: float = 0.0
 
 
 func _ready() -> void:
-	"""Initialize the game manager."""
+	## Initialize the game manager
 	# Don't pause the game manager during hit stops
 	# 在僵直期间不要暂停游戏管理器
 	process_mode = PROCESS_MODE_ALWAYS
@@ -64,7 +64,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	"""Update hit stop duration."""
+	## Update hit stop duration
 	if _hit_stop_active and _hit_stop_timer > 0.0:
 		_hit_stop_timer -= delta
 
@@ -77,10 +77,6 @@ func _process(delta: float) -> void:
 ##
 ## @param points - Amount of points to add
 func add_score(points: int) -> void:
-	"""
-	Add points to the score.
-	添加点数到得分。
-	"""
 	score += points
 	score_changed.emit(score)
 
@@ -93,10 +89,6 @@ func add_score(points: int) -> void:
 ##
 ## @param points - Amount of points to subtract
 func subtract_score(points: int) -> void:
-	"""
-	Subtract points from the score.
-	从得分中减去点数。
-	"""
 	score = max(0, score - points)
 	score_changed.emit(score)
 
@@ -104,10 +96,6 @@ func subtract_score(points: int) -> void:
 ## Lose a life and check for game over
 ## 失去一条生命并检查游戏是否结束
 func lose_life() -> void:
-	"""
-	Lose a life and trigger game over if lives reach 0.
-	失去一条生命，如果生命值达到0，触发游戏结束。
-	"""
 	if lives > 0:
 		lives -= 1
 		lives_changed.emit(lives)
@@ -122,10 +110,6 @@ func lose_life() -> void:
 ## Gain a life up to max_lives
 ## 获得一条生命直到max_lives
 func gain_life() -> void:
-	"""
-	Gain a life up to the maximum.
-	获得一条生命直到最大值。
-	"""
 	if lives < max_lives:
 		lives += 1
 		lives_changed.emit(lives)
@@ -137,10 +121,6 @@ func gain_life() -> void:
 ## Trigger game over state
 ## 触发游戏结束状态
 func trigger_game_over() -> void:
-	"""
-	Trigger the game over state.
-	触发游戏结束状态。
-	"""
 	if is_game_over:
 		return  # Already game over
 
@@ -158,10 +138,6 @@ func trigger_game_over() -> void:
 ## Reset the game to initial state
 ## 将游戏重置为初始状态
 func reset_game() -> void:
-	"""
-	Reset the game to the initial state.
-	将游戏重置为初始状态。
-	"""
 	score = 0
 	lives = max_lives
 	is_game_over = false
@@ -186,14 +162,6 @@ func reset_game() -> void:
 ##
 ## @param duration - How long to freeze in seconds
 func hit_stop(duration: float = 0.1) -> void:
-	"""
-	Apply a brief hit stop (game freeze) effect.
-	应用简短的僵直（游戏冻结）效果。
-
-	This creates an impactful feel when hits land by freezing the game
-	for a brief moment.
-	这通过在短暂的时刻冻结游戏，在击中时创建有冲击力的感觉。
-	"""
 	if _hit_stop_active:
 		# If already in hit stop, extend it
 		# 如果已经在僵直，延长它
@@ -211,7 +179,6 @@ func hit_stop(duration: float = 0.1) -> void:
 ## Internal method to end the hit stop effect
 ## 内部方法以结束僵直效果
 func _end_hit_stop() -> void:
-	"""End the hit stop effect and resume the game."""
 	_hit_stop_active = false
 	_hit_stop_timer = 0.0
 
@@ -220,23 +187,32 @@ func _end_hit_stop() -> void:
 	get_tree().paused = false
 
 
-## Request a screen shake effect
-## 请求屏幕震动效果
+## Emit screen shake effect signal
+## 发出屏幕震动效果信号
 ##
-## This signal should be connected to a camera node that handles the shake.
-## 此信号应连接到处理震动的摄像机节点。
+## This emits the request_screen_shake signal that camera listens to.
+## 此方法发出 request_screen_shake 信号，相机会监听。
 ##
 ## @param intensity - How intense the shake is (0-1 typically)
 ## @param duration - How long the shake lasts in seconds
-func request_screen_shake(intensity: float = 0.5, duration: float = 0.2) -> void:
-	"""
-	Request a screen shake effect from the active camera.
-	从活跃摄像机请求屏幕震动效果。
-	"""
+func emit_screen_shake(intensity: float = 0.5, duration: float = 0.2) -> void:
 	request_screen_shake.emit(intensity, duration)
 
 	if OS.is_debug_build():
 		print("Screen shake requested: intensity=%.2f, duration=%.2f" % [intensity, duration])
+
+
+## Add stars (for pickup system)
+## 增加星星（拾取系统用）
+func add_stars(amount: int) -> void:
+	# 星星直接转为分数 / Stars convert to score
+	add_score(amount * 500)
+
+
+## Add money (for pickup system)
+## 增加金钱（拾取系统用）
+func add_money(amount: int) -> void:
+	add_score(amount)
 
 
 ## Set the current level
@@ -244,7 +220,6 @@ func request_screen_shake(intensity: float = 0.5, duration: float = 0.2) -> void
 ##
 ## @param level - The level number
 func set_level(level: int) -> void:
-	"""Set the current level number."""
 	current_level = level
 
 
@@ -253,10 +228,6 @@ func set_level(level: int) -> void:
 ##
 ## @returns A dictionary containing all relevant game state
 func get_state() -> Dictionary:
-	"""
-	Get the current game state.
-	获取当前游戏状态。
-	"""
 	return {
 		"score": score,
 		"lives": lives,
@@ -271,10 +242,6 @@ func get_state() -> Dictionary:
 ##
 ## @param state - Dictionary containing game state
 func load_state(state: Dictionary) -> void:
-	"""
-	Load game state from a dictionary.
-	从字典加载游戏状态。
-	"""
 	if state.has("score"):
 		score = state["score"]
 	if state.has("lives"):

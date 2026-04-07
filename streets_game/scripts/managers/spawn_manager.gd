@@ -1,7 +1,8 @@
 ## 生成管理器 / Spawn Manager
 ## 管理敌人生成和攻击槽 / Manages enemy spawning and attack slots
 extends Node
-class_name SpawnManager
+## class_name 已移除：Godot 4 不允許 class_name 與 autoload 名稱相同
+## class_name removed: Godot 4 forbids class_name matching autoload singleton name
 
 # 攻击槽管理 / Attack slot management
 var attack_slots: int = 3  # 同时允许的攻击数 / Simultaneous attacks allowed
@@ -22,9 +23,11 @@ var player: Player = null
 
 
 func _ready() -> void:
-	"""初始化生成管理器 / Initialize spawn manager"""
+	## 初始化生成管理器 / Initialize spawn manager
 	# 查找玩家 / Find player
-	player = get_tree().get_first_child_in_group("player") as Player
+	var players = get_tree().get_nodes_in_group("player")
+	if players.size() > 0:
+		player = players[0] as Player
 
 	# 收集生成点 / Collect spawn points
 	for child in get_children():
@@ -34,7 +37,6 @@ func _ready() -> void:
 
 ## 请求攻击槽 / Request attack slot
 func request_attack_slot() -> bool:
-	"""请求权限执行攻击 / Request permission to execute attack"""
 	if active_attack_count < attack_slots:
 		active_attack_count += 1
 		return true
@@ -43,14 +45,12 @@ func request_attack_slot() -> bool:
 
 ## 释放攻击槽 / Release attack slot
 func release_attack_slot() -> void:
-	"""释放攻击权限 / Release attack permission"""
 	if active_attack_count > 0:
 		active_attack_count -= 1
 
 
 ## 生成敌人 / Spawn enemy
 func spawn_enemy(enemy_type: String, position: Vector2 = Vector2.ZERO) -> EnemyBase:
-	"""生成一个敌人 / Spawn an enemy"""
 	var scene: PackedScene = null
 	var enemy: EnemyBase = null
 
@@ -99,9 +99,8 @@ func spawn_enemy(enemy_type: String, position: Vector2 = Vector2.ZERO) -> EnemyB
 
 ## 立即生成多个敌人 / Spawn multiple enemies at once
 func spawn_wave(wave_config: Array) -> Array[EnemyBase]:
-	"""生成一波敌人 / Spawn a wave of enemies
-	wave_config format: [{"type": "goon", "count": 3, "offset": Vector2(50, 50)}, ...]
-	"""
+	## 生成一波敌人 / Spawn a wave of enemies
+	## wave_config format: [{"type": "goon", "count": 3, "offset": Vector2(50, 50)}, ...]
 	var spawned: Array[EnemyBase] = []
 
 	for config in wave_config:
@@ -120,7 +119,6 @@ func spawn_wave(wave_config: Array) -> Array[EnemyBase]:
 
 ## 获取随机生成位置 / Get random spawn position
 func get_random_spawn_position() -> Vector2:
-	"""获取随机的生成位置 / Get a random spawn position"""
 	if spawn_points.size() == 0:
 		return Vector2(500, 300)
 
@@ -129,7 +127,6 @@ func get_random_spawn_position() -> Vector2:
 
 ## 敌人死亡回调 / Enemy death callback
 func _on_enemy_died(enemy: EnemyBase) -> void:
-	"""当敌人死亡时调用 / Called when an enemy dies"""
 	if enemy in active_enemies:
 		active_enemies.erase(enemy)
 
@@ -140,13 +137,11 @@ func _on_enemy_died(enemy: EnemyBase) -> void:
 
 ## 获取活跃敌人数 / Get active enemy count
 func get_active_enemy_count() -> int:
-	"""获取当前活跃敌人数 / Get current active enemy count"""
 	return active_enemies.size()
 
 
 ## 清除所有敌人 / Clear all enemies
 func clear_all_enemies() -> void:
-	"""清除所有敌人 / Clear all enemies"""
 	for enemy in active_enemies:
 		if enemy and not enemy.is_queued_for_deletion():
 			enemy.queue_free()

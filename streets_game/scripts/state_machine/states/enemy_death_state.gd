@@ -8,7 +8,7 @@ var death_progress: float = 0.0
 
 
 func enter() -> void:
-	"""进入死亡状态 / Enter death state"""
+	## 进入死亡状态 / Enter death state
 	if character:
 		character.animation_player.play("death")
 		character.disable_hitbox()
@@ -21,8 +21,8 @@ func enter() -> void:
 		death_progress = 0.0
 
 
-func process_physics(delta: float) -> void:
-	"""处理死亡逻辑 / Handle death logic"""
+func physics_process(delta: float) -> void:
+	## 处理死亡逻辑 / Handle death logic
 	if not character:
 		return
 

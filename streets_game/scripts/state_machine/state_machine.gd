@@ -19,11 +19,11 @@ var character: BaseCharacter
 
 ## Dictionary to cache state nodes for quick lookup
 ## 缓存状态节点以供快速查找的字典
-var _states: Dictionary[StringName, State] = {}
+var _states: Dictionary = {}
 
 
 func _ready() -> void:
-	"""Initialize the state machine and enter the initial state."""
+	## Initialize the state machine and enter the initial state.
 	# Get character reference from parent
 	# 从父节点获取角色引用
 	character = get_parent() as BaseCharacter
@@ -52,19 +52,19 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	"""Forward input events to the current state."""
+	## Forward input events to the current state.
 	if current_state:
 		current_state.input_process(event)
 
 
 func _process(delta: float) -> void:
-	"""Forward frame updates to the current state."""
+	## Forward frame updates to the current state.
 	if current_state:
-		current_state.physics_process(delta)
+		current_state.process_frame(delta)
 
 
 func _physics_process(delta: float) -> void:
-	"""Forward physics updates to the current state."""
+	## Forward physics updates to the current state.
 	if current_state:
 		current_state.physics_process(delta)
 
@@ -78,7 +78,6 @@ func _physics_process(delta: float) -> void:
 ## @param new_state - The State node to transition to
 ## @returns true if transition was successful, false otherwise
 func transition_to(new_state: State) -> bool:
-	"""Transition from current state to a new state."""
 	# Validate the new state
 	# 验证新状态
 	if not new_state:
@@ -110,7 +109,6 @@ func transition_to(new_state: State) -> bool:
 ## Overloaded transition_to that accepts both State and String
 ## 接受State和String的重载transition_to
 func transition_to_variant(state_or_name) -> bool:
-	"""Transition to a state by name or State reference."""
 	# If it's a string name
 	if state_or_name is String or state_or_name is StringName:
 		if state_or_name not in _states:
@@ -148,7 +146,6 @@ func transition_to_variant(state_or_name) -> bool:
 ## Transition to a state by name
 ## 通过名称转换到状态
 func transition_to_by_name(state_name: StringName) -> bool:
-	"""Transition to a state by its node name."""
 	if state_name not in _states:
 		push_error("StateMachine: State '%s' not found" % state_name)
 		return false
@@ -162,7 +159,6 @@ func transition_to_by_name(state_name: StringName) -> bool:
 ## @param state_name - The name of the state node
 ## @returns The State node, or null if not found
 func get_state(state_name: StringName) -> State:
-	"""Get a state by its node name."""
 	return _states.get(state_name)
 
 
@@ -172,7 +168,6 @@ func get_state(state_name: StringName) -> State:
 ## @param state - The state to check
 ## @returns true if the state is the current state
 func is_state_active(state: State) -> bool:
-	"""Check if the given state is the current active state."""
 	return current_state == state
 
 
@@ -182,5 +177,4 @@ func is_state_active(state: State) -> bool:
 ## @param state_name - The name of the state to check
 ## @returns true if the named state is currently active
 func is_state_active_by_name(state_name: StringName) -> bool:
-	"""Check if a state is active by its node name."""
 	return current_state and current_state.name == state_name

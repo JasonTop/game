@@ -36,8 +36,8 @@ func _ready() -> void:
 	# 连接到游戏管理器屏幕震动信号 | Connect to GameManager screen shake signal
 	if has_node("/root/GameManager"):
 		var game_manager = get_node("/root/GameManager")
-		if game_manager.has_signal("screen_shake_requested"):
-			game_manager.screen_shake_requested.connect(_on_screen_shake_requested)
+		if game_manager.has_signal("request_screen_shake"):
+			game_manager.request_screen_shake.connect(_on_screen_shake_requested)
 
 	_target_position = follow_target.global_position
 	global_position = _target_position

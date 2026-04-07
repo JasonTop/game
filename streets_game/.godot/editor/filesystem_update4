@@ -1,0 +1,7 @@
+res://scripts/managers/spawn_manager.gd
+res://scripts/state_machine/state.gd
+res://scripts/state_machine/state_machine.gd
+res://scripts/systems/game_manager.gd
+res://scripts/ui/title_screen.gd
+res://scenes/ui/title_screen.tscn
+res://scripts/systems/effect_spawner.gd

@@ -16,14 +16,13 @@ func _ready() -> void:
 	super()
 
 
+## 获取当前速度 / Get current speed
 func get_current_speed() -> float:
-	"""获取当前速度 / Get current speed"""
 	return speed
 
 
-## 执行普通攻击 / Perform basic punch attack
+## 执行挥拳攻击 / Execute punch attack
 func perform_punch() -> void:
-	"""执行挥拳攻击 / Execute punch attack"""
 	if not target:
 		return
 
